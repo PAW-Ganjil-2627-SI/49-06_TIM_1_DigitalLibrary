@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Digital Library - Fasilitas &amp; Area</title>
+    <title>@yield('title', 'Digital Library')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -74,6 +74,23 @@
             font-weight: bold;
         }
 
+        .module-nav {
+            margin-top: 12px;
+            font-size: 14px;
+        }
+        .module-nav a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 10px;
+            opacity: 0.8;
+        }
+        .module-nav a:hover { opacity: 1; }
+        .module-nav a.active {
+            opacity: 1;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
         footer.app-footer {
             background-color: #2c3e50;
             color: #ffffff;
@@ -86,6 +103,7 @@
             font-size: 14px;
         }
     </style>
+    @stack('styles')
 </head>
 <body>
 
@@ -100,6 +118,20 @@
             <button class="btn btn-sm btn-outline-light">Logout</button>
         </form>
     </div>
+    <nav class="module-nav">
+        @if (Route::has('members.index'))
+            <a href="{{ route('members.index') }}" class="{{ request()->routeIs('members.*') ? 'active' : '' }}">Anggota &amp; Kartu</a>
+        @endif
+        @if (Route::has('buku.index'))
+            <a href="{{ route('buku.index') }}" class="{{ request()->routeIs('buku.*') ? 'active' : '' }}">Katalog &amp; Buku</a>
+        @endif
+        @if (Route::has('suppliers.index'))
+            <a href="{{ route('suppliers.index') }}" class="{{ request()->routeIs('suppliers.*') ? 'active' : '' }}">Penerbit &amp; Supplier</a>
+        @endif
+        @if (Route::has('area.index'))
+            <a href="{{ route('area.index') }}" class="{{ request()->routeIs('area.*') ? 'active' : '' }}">Fasilitas &amp; Area</a>
+        @endif
+    </nav>
     @endauth
 </header>
 
@@ -111,12 +143,14 @@
 </main>
 
 <footer class="app-footer">
-    <p>Nama: Marcel Aziz</p>
-    <p>NIM: 102022500231</p>
-    <p>Kelas: SI4906</p>
-    <p>Kelompok: Kelompok 1</p>
-    <p>Modul: Fasilitas &amp; Area</p>
+    @hasSection('identitas')
+        @yield('identitas')
+    @else
+        <p>Kelas: SI4906</p>
+        <p>Kelompok: Kelompok 1</p>
+    @endif
 </footer>
 
+@stack('scripts')
 </body>
 </html>
